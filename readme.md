@@ -22,7 +22,8 @@ Wait until model is loaded and this console message appears: **almost ready**
 
 Then just speak something and the transcription works as expected:
 
-![image](https://gist.github.com/assets/3322836/bb213b29-2c8b-43aa-8fa1-24bb0ccce3f0)
+![image](https://github.com/jrichardsz/nodejs-wav-vosk-transcription/assets/3322836/1adb2725-a057-43bc-a45b-d7b71d82b582)
+
 
 ## Don't work using native microphone and sockets
 
@@ -44,7 +45,8 @@ node client_native_with_socket.js
 
 Audio will be sent to the server. In the server log you will see that is not a wave format for vosk but it is a valid wav file
 
-![image](https://gist.github.com/assets/3322836/62ac9622-0ee8-4e58-9c6b-52d5b7d9a455)
+![image](https://github.com/jrichardsz/nodejs-wav-vosk-transcription/assets/3322836/ed18e7dc-11a9-4eec-b36a-1bc18aeb09ee)
+
 
 ## Don't work using web microphone and sockets
 
@@ -60,6 +62,12 @@ node client_web.js
 - Press "stop record".
 - Finally press "send recorded wav to socket"
 
-![image](https://gist.github.com/assets/3322836/bd88a95d-f41d-42e5-9f6a-0ab31f8c37dc)
+![image](https://github.com/jrichardsz/nodejs-wav-vosk-transcription/assets/3322836/529dbf18-36e6-4c88-81f6-d9da40ccfa36)
 
-> Note: If I choose stereo, and record again, the **rec.acceptWaveform** returns true but the transcription is not the expected
+- Result is the same in the server
+
+![image](https://github.com/jrichardsz/nodejs-wav-vosk-transcription/assets/3322836/ed18e7dc-11a9-4eec-b36a-1bc18aeb09ee)
+
+### Note: 
+
+If I choose **stereo**, and record again, the **rec.acceptWaveform** returns **true** but the transcription is not the expected
