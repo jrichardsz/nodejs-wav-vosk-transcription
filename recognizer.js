@@ -5,6 +5,8 @@ const fs = require("fs");
 var mic = require("mic");
 
 SAMPLE_RATE = 44100
+PLAYING_FILE = process.env.PLAYING_FILE
+RESULT_FILE = process.env.RESULT_FILE
 
 if (!fs.existsSync(process.env.MODEL_PATH)) {
     console.log("Please download the model from https://alphacephei.com/vosk/models , unpack it and \n"+
@@ -29,14 +31,22 @@ var micInputStream = micInstance.getAudioStream();
 
 console.log("almost ready")
 
+var spellsRecognizerData = {};
+
 micInputStream.on('data', async (data) => {    
     if(rec.acceptWaveform(data)){
-      console.log("received:", data)
-      console.log("rec.acceptWaveform:", true)
-      console.log("rec.result():", rec.result())
-    }else{
-      console.log("rec.acceptWaveform:", false)
-    }        
+      var result = rec.result();
+      if(result && result.text && result.text !=""){
+        var playing = await fs.promises.readFile(PLAYING_FILE, "utf8");
+        var rawSpellId = playing.split("/").slice(-1)[0];
+        var spellId = rawSpellId.split(".")[0];
+        if(typeof spellsRecognizerData[spellId] === 'undefined'){
+            spellsRecognizerData[spellId] = [];
+        }
+        spellsRecognizerData[spellId].push(result.text);
+        console.log(`${spellId} : ${result.text}`);
+      }  
+    }    
 });
 
 micInputStream.on('audioProcessExitComplete', function() {
@@ -46,8 +56,12 @@ micInputStream.on('audioProcessExitComplete', function() {
     model.free();
 });
 
-process.on('SIGINT', function() {
+process.on('SIGINT', async function() {
     console.log("\nStopping");
+
+    var spellsAsString = JSON.stringify(spellsRecognizerData);
+    await fs.promises.writeFile(RESULT_FILE, spellsAsString);
+
     micInstance.stop();
 });
 

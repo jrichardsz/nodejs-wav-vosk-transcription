@@ -1,3 +1,8 @@
+## Libraries
+
+- https://github.com/alphacep/vosk-api
+- https://github.com/solyarisoftware/voskJs/tree/master/examples
+
 ## setup
 
 - Download some vosk model like **vosk-model-en-us-0.42-gigaspeech** from  https://alphacephei.com/vosk/models 
